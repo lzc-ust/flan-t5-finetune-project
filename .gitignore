@@ -16,7 +16,7 @@ logs/
 .env
 
 # Ignore dataset splits if needed
-datasets/*.jsonl
+# datasets/*.jsonl
 
 # Ignore large files
 *.zip
