@@ -4,48 +4,20 @@
 #SBATCH --error=logs/train_flan_t5_%j.err
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --gpus=4
+#SBATCH --gpus=2
 #SBATCH --cpus-per-task=16
 #SBATCH --account="msccsit2024"
 #SBATCH --partition=normal
-#SBATCH --time=48:00:00
+#SBATCH --time=4:00:00
 
 echo "🔵 Starting job on $(hostname) at $(date)"
 
-# 加载bashrc，确保conda生效
-source ~/.bashrc
-
-# 加载Anaconda3模块（适配SuperPod要求）
+# 加载 Anaconda
 module load Anaconda3/2023.09-0
 
-# 检查conda是否可用
-if ! command -v conda &> /dev/null
-then
-    echo "❌ conda not found. Please install Miniconda or Anaconda first."
-    exit 1
-fi
-
-# 检查环境是否存在
-ENV_NAME="flan-t5-finetune"
-if conda info --envs | grep -q "$ENV_NAME"; then
-    echo "✅ Conda environment '$ENV_NAME' found. Activating..."
-else
-    echo "⚠️ Conda environment '$ENV_NAME' not found. Initializing environment setup..."
-    bash init_env.sh
-fi
-
-# 激活环境
-conda activate $ENV_NAME
-
-# 检查GPU
-nvidia-smi
-
-# 检查accelerate配置（如果还没配置，需要人工配置一次）
-if [ ! -f ~/.cache/huggingface/accelerate/default_config.yaml ]; then
-    echo "⚠️ Accelerate config not found. Please run 'accelerate config' manually before first training."
-else
-    echo "✅ Found Accelerate config."
-fi
+# 激活环境（已手动创建）
+source ~/.bashrc
+conda activate flan-t5-finetune
 
 # 正式训练
 echo "🚀 Launching training..."
