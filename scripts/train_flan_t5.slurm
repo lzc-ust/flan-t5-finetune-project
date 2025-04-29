@@ -21,5 +21,5 @@ conda activate flan-t5-finetune
 
 # 正式训练
 echo "🚀 Launching training..."
-accelerate launch --multi_gpu --mixed_precision fp16 src/train_flan_t5.py
+accelerate launch --main_process_port=0 --multi_gpu --mixed_precision fp16 src/train_flan_t5.py
 echo "✅ Training completed on $(hostname) at $(date)"
