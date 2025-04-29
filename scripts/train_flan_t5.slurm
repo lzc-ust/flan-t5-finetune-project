@@ -7,7 +7,7 @@
 #SBATCH --gpus=4
 #SBATCH --cpus-per-task=16
 #SBATCH --partition=normal
-#SBATCH --account=msccsit20+
+#SBATCH --account="msccsit20+"
 #SBATCH --time=48:00:00
 
 echo "🔵 Starting job on $(hostname) at $(date)"
