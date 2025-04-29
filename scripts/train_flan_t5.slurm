@@ -19,6 +19,10 @@ module load Anaconda3/2023.09-0
 source ~/.bashrc
 conda activate flan-t5-finetune
 
+cd /home/zlijw/flan-t5-finetune-project/
+
+export PYTHONPATH=$(pwd)
+
 # 正式训练
 echo "🚀 Launching training..."
 accelerate launch --main_process_port=0 --multi_gpu --mixed_precision fp16 src/train_flan_t5.py
