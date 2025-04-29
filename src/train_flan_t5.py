@@ -9,7 +9,7 @@ from transformers import (
     DataCollatorForSeq2Seq,
     EarlyStoppingCallback,
 )
-from src.evaluate import compute_metrics
+from src.compute_metrics import compute_metrics
 
 def load_dataset_from_jsonl(file_path):
     data = []
