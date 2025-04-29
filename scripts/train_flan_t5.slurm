@@ -7,12 +7,16 @@
 #SBATCH --gpus=4
 #SBATCH --cpus-per-task=16
 #SBATCH --partition=normal
+#SBATCH --account=msccsit20+
 #SBATCH --time=48:00:00
 
 echo "🔵 Starting job on $(hostname) at $(date)"
 
-# 保证加载正确bashrc
+# 加载bashrc，确保conda生效
 source ~/.bashrc
+
+# 加载Anaconda3模块（适配SuperPod要求）
+module load Anaconda3/2023.09-0
 
 # 检查conda是否可用
 if ! command -v conda &> /dev/null
@@ -33,17 +37,17 @@ fi
 # 激活环境
 conda activate $ENV_NAME
 
-# 显示CUDA信息
+# 检查GPU
 nvidia-smi
 
-# 加载Accelerate配置（如果已经有）
+# 检查accelerate配置（如果还没配置，需要人工配置一次）
 if [ ! -f ~/.cache/huggingface/accelerate/default_config.yaml ]; then
     echo "⚠️ Accelerate config not found. Please run 'accelerate config' manually before first training."
 else
     echo "✅ Found Accelerate config."
 fi
 
-# 正式启动训练
+# 正式训练
 echo "🚀 Launching training..."
 accelerate launch --multi_gpu --mixed_precision fp16 src/train_flan_t5.py
 echo "✅ Training completed on $(hostname) at $(date)"
