@@ -17,7 +17,8 @@ def load_dataset_from_jsonl(file_path):
 
 def main():
     # 注意：路径要从 tests/ 回到上级目录
-    test_path = os.path.join(project_root, "datasets", "test.jsonl")  # ⚡ 这里改了
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    test_path = os.path.join(project_root, "datasets", "test.jsonl")
     model_dir = os.path.join(project_root, "checkpoints", "flan-t5-full")
     output_dir = os.path.join("..", "tests", "test_results")
     os.makedirs(output_dir, exist_ok=True)
