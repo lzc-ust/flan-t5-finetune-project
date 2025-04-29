@@ -62,6 +62,8 @@ def main():
         output_dir=output_dir,
         evaluation_strategy="epoch",
         save_strategy="epoch",
+        save_strategy="steps",                      # ⚡每N步保存一次
+        save_steps=500, 
         save_total_limit=2,
         learning_rate=2e-4,
         per_device_train_batch_size=4,
