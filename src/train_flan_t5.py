@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import datetime
 from datasets import Dataset
 from transformers import (
     AutoTokenizer,
@@ -35,11 +36,14 @@ def preprocess_function(examples, tokenizer, max_input_length=256, max_target_le
     return model_inputs
 
 def main():
+    # Timestamp for unique output/log directories
+    time_tag = datetime.now().strftime("%Y%m%d-%H%M")
+
     # Paths
     train_path = os.path.join("datasets", "train.jsonl")
     valid_path = os.path.join("datasets", "valid.jsonl")
-    output_dir = os.path.join("checkpoints", "flan-t5-full")
-    logs_dir = "logs"
+    output_dir = os.path.join("checkpoints", f"flan-t5-full-{time_tag}")
+    logs_dir = os.path.join("logs", f"log-{time_tag}")
 
     os.makedirs(output_dir, exist_ok=True)
     os.makedirs(logs_dir, exist_ok=True)
@@ -60,12 +64,12 @@ def main():
     # Training Arguments
     training_args = Seq2SeqTrainingArguments(
         output_dir=output_dir,
-        evaluation_strategy="epoch",
-        save_strategy="epoch",
-        save_strategy="steps",                      # ⚡每N步保存一次
-        save_steps=500, 
+        evaluation_strategy="steps",
+        save_strategy="steps",
+        save_steps=500,
         save_total_limit=2,
         learning_rate=2e-4,
+        lr_scheduler_type="cosine",
         per_device_train_batch_size=4,
         per_device_eval_batch_size=4,
         gradient_accumulation_steps=1,
@@ -80,6 +84,8 @@ def main():
         greater_is_better=False,
         dataloader_num_workers=4,
         report_to="tensorboard",
+        save_safetensors=True,
+        # gradient_checkpointing=True,  # Uncomment if needed to save GPU memory
     )
 
     # Trainer
