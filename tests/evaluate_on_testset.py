@@ -15,13 +15,24 @@ def load_dataset_from_jsonl(file_path):
             data.append(json.loads(line))
     return Dataset.from_list(data)
 
+def find_latest_checkpoint(base_dir):
+    checkpoints = [d for d in os.listdir(base_dir) if d.startswith("flan-t5-full")]
+    checkpoints.sort(reverse=True)
+    return os.path.join(base_dir, checkpoints[0]) if checkpoints else None
+
 def main():
     # 注意：路径要从 tests/ 回到上级目录
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     test_path = os.path.join(project_root, "datasets", "test.jsonl")
-    model_dir = os.path.join(project_root, "checkpoints", "flan-t5-full")
-    output_dir = os.path.join("..", "tests", "test_results")
+    model_base = os.path.join(project_root, "checkpoints")
+    model_dir = find_latest_checkpoint(model_base)
+    output_dir = os.path.join(project_root, "tests", "test_results")
     os.makedirs(output_dir, exist_ok=True)
+
+    if model_dir is None:
+        raise ValueError("❌ No model checkpoint found in 'checkpoints/'")
+
+    print(f"✅ Using latest model: {model_dir}")
 
     # Load model and tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_dir)
