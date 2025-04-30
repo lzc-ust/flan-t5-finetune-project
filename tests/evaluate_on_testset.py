@@ -91,5 +91,16 @@ def main():
     print(f"METEOR Score: {meteor_result['meteor'] * 100:.2f}%")
     print(f"📄 Predictions saved to: {csv_path}")
 
+    # Save metrics to JSON
+    json_path = os.path.join(output_dir, "test_metrics.json")
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump({
+            "rougeL": round(rouge_result['rougeL'] * 100, 2),
+            "bleu": round(bleu_result['bleu'] * 100, 2),
+            "meteor": round(meteor_result['meteor'] * 100, 2),
+            "simple_accuracy": round(simple_acc * 100, 2)
+        }, f, indent=4, ensure_ascii=False)
+    print(f"📊 Metrics saved to: {json_path}")
+
 if __name__ == "__main__":
     main()

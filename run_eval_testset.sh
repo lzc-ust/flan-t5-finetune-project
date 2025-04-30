@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=finetune-flan-t5
-#SBATCH --output=logs/train_flan_t5_%j.out
-#SBATCH --error=logs/train_flan_t5_%j.err
+#SBATCH --output=logs/eval_testset_%j.out
+#SBATCH --error=logs/eval_testset_%j.err
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --gpus=1
