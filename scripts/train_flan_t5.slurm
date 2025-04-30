@@ -12,23 +12,14 @@
 
 echo "🔵 Starting job on $(hostname) at $(date)"
 
-# 加载 Anaconda
-module load Anaconda3/2023.09-0
-
-# 激活环境（已手动创建）
-# source ~/.bashrc
-# 初始化 conda（让 activate 生效）
-source /cm/shared/apps/Anaconda3/2023.09-0/etc/profile.d/conda.sh
-
-# 激活你自己的环境
-conda activate flan-t5-finetune
-
+# 切换到项目根目录
 cd /home/zlijw/flan-t5-finetune-project/
 
+# 设置 PYTHONPATH，确保 src 模块可被识别
 export PYTHONPATH=$(pwd)
 
-# 正式训练
+# 正式训练（单卡）
 echo "🚀 Launching training..."
-# accelerate launch --main_process_port=0 --multi_gpu --mixed_precision fp16 src/train_flan_t5.py
-python src/train_flan_t5.py
+/home/zlijw/.conda/envs/flan-t5-finetune/bin/python src/train_flan_t5.py
+
 echo "✅ Training completed on $(hostname) at $(date)"
