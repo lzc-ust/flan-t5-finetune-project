@@ -17,7 +17,7 @@ module load Anaconda3/2023.09-0
 
 # 激活环境（已手动创建）
 source ~/.bashrc
-conda activate flan-t5-finetune
+source /home/zlijw/.conda/envs/flan-t5-finetune/bin/activate
 
 cd /home/zlijw/flan-t5-finetune-project/
 
