@@ -16,8 +16,12 @@ echo "🔵 Starting job on $(hostname) at $(date)"
 module load Anaconda3/2023.09-0
 
 # 激活环境（已手动创建）
-source ~/.bashrc
-source /home/zlijw/.conda/envs/flan-t5-finetune/bin/activate
+# source ~/.bashrc
+# 初始化 conda（让 activate 生效）
+source /cm/shared/apps/Anaconda3/2023.09-0/etc/profile.d/conda.sh
+
+# 激活你自己的环境
+conda activate flan-t5-finetune
 
 cd /home/zlijw/flan-t5-finetune-project/
 
